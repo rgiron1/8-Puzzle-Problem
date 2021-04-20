@@ -8,7 +8,7 @@ using namespace std;
 //Problem class will have all the intial states, the goal state, and the current state. 
 class Problem{
     public: 
-    //inital States
+//-----------------------------------States-----------------------------------------------
         vector<vector<int>> trivialState = {{1,2,3},
                                                 {4,5,6},
                                                 {7,8,0}};
@@ -42,13 +42,18 @@ class Problem{
         //current State:
         vector<vector<int>> currentState;
 
-        //Operations will go in here
+//-------------------------Operations---------------------------------------
 
-    //Constructor
-    // Problem(){
-    //     intialState = {}; 
-    //     currentState = {};
-    // }
+
+enum Operations{
+    up,
+    down,
+    left,
+    right
+};
+
+
+//-------------------------Functions---------------------------------------
 
     void setCurrentState(vector<vector<int>> state){
         currentState = state;
