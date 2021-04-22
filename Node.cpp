@@ -36,7 +36,7 @@ class Node{
         Node(vector<vector<int>> input_state, Node* parent, int heuristic){
             cost = parent->cost + 1;
             this->heuristic = heuristic;
-            totalCost = cost + heuristic;
+            totalCost = cost + this->heuristic;
             state = input_state;
             this->parent = parent;
             up = nullptr;

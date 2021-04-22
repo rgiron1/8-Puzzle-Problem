@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <queue>
+#include <stack>
 #include <map>
 using namespace std;
 
@@ -15,38 +16,65 @@ int AStarEuclidianHeuristic(vector<vector<int>> state){
     return 0;
 }
 
+void Print(vector<vector<int>> input){
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            cout << input[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << "------------------------------------" << endl;
+}
 
+void backTracing(Node* node) {
+    int steps = 0;
+    stack<vector<vector<int>>> stack;
+    while (node->parent != nullptr) {
+        stack.push(node->state);
+        node = node->parent;
+    }
+    while (!stack.empty()) {
+        steps++;
+        Print(stack.top());
+        stack.pop();
+    }
+    cout << "It took " << steps << " moves to solve the puzzle"<< endl;
+}
 
-void uniformCostSearch(Problem p){
+bool uniformCostSearch(Problem p){
     map<vector<vector<int>>, bool> visited;
-    Node *curNode = new Node(p.currentState);
+    Node *root = new Node(p.currentState);
+    if(p.currentState == p.goalState){
+        return true;
+    }
+    visited[root->state] = true;
     for(int i = 0; i < 3; i++){
         for(int j = 0; j < 3; j++){
             if(p.currentState[i][j] == 0){
-                curNode->zeroI = i;
-                curNode->zeroJ = j;
-                cout << curNode->zeroI << " " << curNode->zeroJ << endl;
+                root->zeroI = i;
+                root->zeroJ = j;
             }
         }
     }
 
     struct compareTotalCost{
-        bool operator() (Node a, Node b){
-            return (a.totalCost < b.totalCost);
+        bool operator() (Node* a, Node* b){
+            return (a->totalCost > b->totalCost);
         }
     };
 
-    priority_queue<Node, vector<Node>,  compareTotalCost> q;
+    priority_queue<Node*, vector<Node*>,  compareTotalCost> q;
     
     //UP
-    if(curNode->zeroI > 0){
+    if(root->zeroI > 0){
         vector<vector<int>> upState = p.currentState;
-        swap(upState[curNode->zeroI][curNode->zeroJ], upState[curNode->zeroI - 1][curNode->zeroJ]);
-        Node *upNode = new Node(upState, curNode, 0);
-        upNode->zeroI = curNode->zeroI - 1;
-        upNode->zeroJ = curNode->zeroJ;
-        curNode->up = upNode;
+        swap(upState[root->zeroI][root->zeroJ], upState[root->zeroI - 1][root->zeroJ]);
+        Node *upNode = new Node(upState, root, 0);
+        upNode->zeroI = root->zeroI - 1;
+        upNode->zeroJ = root->zeroJ;
+        root->up = upNode;
         visited[upNode->state] = true;
+        q.push(upNode);
         //cout << "UP " << upNode->zeroI << "," << upNode->zeroJ << endl;
         // for(int i = 0; i < 3; i++){
         //     for(int j = 0; j < 3; j++){
@@ -54,18 +82,17 @@ void uniformCostSearch(Problem p){
         //     }
         //     cout << endl;
         // }
-    } else {
-        cout << "Invalid state" << endl;
-    }
+    } 
     //DOWN
-    if(curNode->zeroI < 2){
+    if(root->zeroI < 2){
         vector<vector<int>> downState = p.currentState;
-        swap(downState[curNode->zeroI][curNode->zeroJ], downState[curNode->zeroI + 1][curNode->zeroJ]);
-        Node *downNode = new Node(downState, curNode, 0);
-        downNode->zeroI = curNode->zeroI + 1;
-        downNode->zeroJ = curNode->zeroJ;
-        curNode->down = downNode;
+        swap(downState[root->zeroI][root->zeroJ], downState[root->zeroI + 1][root->zeroJ]);
+        Node *downNode = new Node(downState, root, 0);
+        downNode->zeroI = root->zeroI + 1;
+        downNode->zeroJ = root->zeroJ;
+        root->down = downNode;
         visited[downNode->state] = true;
+        q.push(downNode);
         //cout << "DOWN " << downNode->zeroI << "," << downNode->zeroJ<< endl;
         // for(int i = 0; i < 3; i++){
         //     for(int j = 0; j < 3; j++){
@@ -73,18 +100,17 @@ void uniformCostSearch(Problem p){
         //     }
         //     cout << endl;
         // }
-    } else {
-        cout << "Invalid state" << endl;
     }
     //LEFT
-    if(curNode->zeroJ > 0){
+    if(root->zeroJ > 0){
         vector<vector<int>> leftState = p.currentState;
-        swap(leftState[curNode->zeroI][curNode->zeroJ], leftState[curNode->zeroI][curNode->zeroJ - 1]);
-        Node *leftNode = new Node(leftState, curNode, 0);
-        leftNode->zeroJ = curNode->zeroJ - 1;
-        leftNode->zeroI = curNode->zeroI;
-        curNode->left = leftNode;
+        swap(leftState[root->zeroI][root->zeroJ], leftState[root->zeroI][root->zeroJ - 1]);
+        Node *leftNode = new Node(leftState, root, 0);
+        leftNode->zeroJ = root->zeroJ - 1;
+        leftNode->zeroI = root->zeroI;
+        root->left = leftNode;
         visited[leftNode->state] = true;
+        q.push(leftNode);
         //cout << "LEFT " << leftNode->zeroI << "," << leftNode->zeroJ << endl;
         // for(int i = 0; i < 3; i++){
         //     for(int j = 0; j < 3; j++){
@@ -92,18 +118,17 @@ void uniformCostSearch(Problem p){
         //     }
         //     cout << endl;
         // }
-    } else {
-        cout << "Invalid state" << endl;
     }
     //RIGHT
-    if(curNode->zeroJ < 2){
+    if(root->zeroJ < 2){
         vector<vector<int>> rightState = p.currentState;
-        swap(rightState[curNode->zeroI][curNode->zeroJ], rightState[curNode->zeroI][curNode->zeroJ + 1]);
-        Node *rightNode = new Node(rightState, curNode, 0);
-        rightNode->zeroJ = curNode->zeroJ + 1;
-        rightNode->zeroI = curNode->zeroI;
-        curNode->right = rightNode;
+        swap(rightState[root->zeroI][root->zeroJ], rightState[root->zeroI][root->zeroJ + 1]);
+        Node *rightNode = new Node(rightState, root, 0);
+        rightNode->zeroJ = root->zeroJ + 1;
+        rightNode->zeroI = root->zeroI;
+        root->right = rightNode;
         visited[rightNode->state] = true;
+        q.push(rightNode);
         //cout << "RIGHT " << rightNode->zeroI << "," << rightNode->zeroJ << endl;
         // for(int i = 0; i < 3; i++){
         //     for(int j = 0; j < 3; j++){
@@ -111,9 +136,69 @@ void uniformCostSearch(Problem p){
         //     }
         //     cout << endl;
         // }
-    } else {
-        cout << "Invalid state" << endl;
+    } 
+//-----------------------------------------------------------------------QUEUE--------------------------------------------------------------------
+    while(!q.empty()){
+        Node* curr = q.top();
+        Print(curr->state);
+        if(curr->state == p.goalState){
+            //backTracing(curr); FOR BACKTRACKING AND EXTRA CREDIT
+            return true;
+        }
+        q.pop();
+        if(curr->zeroI > 0){
+        vector<vector<int>> upState = curr->state;
+        swap(upState[curr->zeroI][curr->zeroJ], upState[curr->zeroI - 1][curr->zeroJ]);
+        if(!visited.count(upState)){
+            Node *upNode = new Node(upState, curr, 0);
+            upNode->zeroI = curr->zeroI - 1;
+            upNode->zeroJ = curr->zeroJ;
+            curr->up = upNode;
+            visited[upNode->state] = true;
+            q.push(upNode);
+        }
+        } 
+        //DOWN
+        if(curr->zeroI < 2){
+            vector<vector<int>> downState = curr->state;
+            swap(downState[curr->zeroI][curr->zeroJ], downState[curr->zeroI + 1][curr->zeroJ]);
+            if(!visited.count(downState)){
+                Node *downNode = new Node(downState, curr, 0);
+                downNode->zeroI = curr->zeroI + 1;
+                downNode->zeroJ = curr->zeroJ;
+                curr->down = downNode;
+                visited[downNode->state] = true;
+                q.push(downNode);
+            }
+        } 
+        //LEFT
+        if(curr->zeroJ > 0){
+            vector<vector<int>> leftState = curr->state;
+            swap(leftState[curr->zeroI][curr->zeroJ], leftState[curr->zeroI][curr->zeroJ - 1]);
+            if(!visited.count(leftState)){
+                Node *leftNode = new Node(leftState, curr, 0);
+                leftNode->zeroJ = curr->zeroJ - 1;
+                leftNode->zeroI = curr->zeroI;
+                curr->left = leftNode;
+                visited[leftNode->state] = true;
+                q.push(leftNode);
+            }
+        }
+        //RIGHT
+        if(curr->zeroJ < 2){
+            vector<vector<int>> rightState = curr->state;
+            swap(rightState[curr->zeroI][curr->zeroJ], rightState[curr->zeroI][curr->zeroJ + 1]);
+            if(!visited.count(rightState)){
+                Node *rightNode = new Node(rightState, curr, 0);
+                rightNode->zeroJ = curr->zeroJ + 1;
+                rightNode->zeroI = curr->zeroI;
+                curr->right = rightNode;
+                visited[rightNode->state] = true;
+                q.push(rightNode);
+            }
+        }
     }
+    return false;
 }
 
 
@@ -121,12 +206,9 @@ void uniformCostSearch(Problem p){
 int main(){
     cout << "Please enter a number between 1 - 6 to select the difficulty that the AI should solve." << endl;
     int difficulty = 0;
-    int tmp;
+    bool success = false;
     cin >> difficulty;
     Problem p;
-
-    
-    //difficulty = stoi(tmp);
     
     
     switch(difficulty){
@@ -134,43 +216,47 @@ int main(){
             p.initialState = p.trivialState;
             p.setCurrentState(p.initialState);
             p.printCurrentState();
-            uniformCostSearch(p);
+            success = uniformCostSearch(p);
             break;
         case 2: 
             p.initialState = p.veryEasyState;
             p.setCurrentState(p.initialState);
             p.printCurrentState();
-            uniformCostSearch(p);
+            success = uniformCostSearch(p);
             break;
         case 3: 
             p.initialState = p.easyState;
             p.setCurrentState(p.initialState);
             p.printCurrentState();
-            uniformCostSearch(p);
+            success = uniformCostSearch(p);
             break;
         case 4: 
             p.initialState = p.doableState;
             p.setCurrentState(p.initialState);
             p.printCurrentState();
-            uniformCostSearch(p);
+            success = uniformCostSearch(p);
             break;
         case 5: 
             p.initialState = p.ohBoyState;
             p.setCurrentState(p.initialState);
             p.printCurrentState();
-            uniformCostSearch(p);
+            success = uniformCostSearch(p);
             break;
         case 6: 
             p.initialState = p.impossibleState;
             p.setCurrentState(p.initialState);
             p.printCurrentState();
-            uniformCostSearch(p);
+            success = uniformCostSearch(p);
             break;
             
         default: 
         cout << "Please rerun the program and enter a correct number" << endl;
             break;
 }
-
+    if(success){
+        cout << "SUCCESS" << endl;
+    } else {
+        cout << "FAILED" << endl;
+    }
     return 0;
 }
