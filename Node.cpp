@@ -3,21 +3,28 @@
 #include <vector>
 #include<math.h>
 #include<iostream>
-#include "Problem.cpp"
-#include "Tree.cpp"
+//#include "Problem.cpp"
+//#include "Tree.cpp"
 using namespace std;
 //containing the different states
 class Node{
-    private:
+    public:
         vector<vector<int>> state;
+        int cost;
+        int heuristic;
+        int totalCost;
+        int zeroI;
+        int zeroJ;
         Node* parent;
         Node* up;
         Node* down;
         Node* left;
         Node* right;
 
-    public:
         Node(vector<vector<int>> input_state){
+            cost = 0;
+            heuristic = 0;
+            totalCost = cost + heuristic;
             state = input_state;
             parent = nullptr;
             up = nullptr;
@@ -26,7 +33,10 @@ class Node{
             right = nullptr;
         }
 
-        Node(vector<vector<int>> input_state, Node* parent){
+        Node(vector<vector<int>> input_state, Node* parent, int heuristic){
+            cost = parent->cost + 1;
+            this->heuristic = heuristic;
+            totalCost = cost + heuristic;
             state = input_state;
             this->parent = parent;
             up = nullptr;
@@ -34,7 +44,7 @@ class Node{
             left = nullptr;
             right = nullptr;
         }
-    
-    
+
+
 
 };

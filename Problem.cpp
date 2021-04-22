@@ -64,14 +64,8 @@ enum Operations{
             for(int j = 0; j < 3; j++){
                 cout << currentState[i][j] << " ";
             }
-            cout << endl;
+            cout << endl ;
         }
-    }
-        
-
-    vector<vector<int>> Solve(vector<vector<int>> prob){
-
-        return goalState; //placeholder
     }
 
 
