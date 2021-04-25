@@ -83,13 +83,6 @@ void moveUp(vector<vector<int>> state, Node* n, int heurisitc){
             visited[upNode->state] = true;
             q.push(upNode);
         }
-        //cout << "UP " << upNode->zeroI << "," << upNode->zeroJ << endl;
-        // for(int i = 0; i < 3; i++){
-        //     for(int j = 0; j < 3; j++){
-        //         cout << upNode->state[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
     } 
 }
     //--------------------------------------------------------------------DOWN----------------------------------------------------------------------------
@@ -105,13 +98,6 @@ void moveDown(vector<vector<int>> state, Node* n, int heurisitc){
             visited[downNode->state] = true;
             q.push(downNode);
         }
-        //cout << "DOWN " << downNode->zeroI << "," << downNode->zeroJ<< endl;
-        // for(int i = 0; i < 3; i++){
-        //     for(int j = 0; j < 3; j++){
-        //         cout << downNode->state[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
     }
 }
     //--------------------------------------------------------------LEFT-----------------------------------------------------------------------
@@ -127,13 +113,6 @@ void moveLeft(vector<vector<int>> state, Node* n, int heurisitc){
             visited[leftNode->state] = true;
             q.push(leftNode);
         }
-        //cout << "LEFT " << leftNode->zeroI << "," << leftNode->zeroJ << endl;
-        // for(int i = 0; i < 3; i++){
-        //     for(int j = 0; j < 3; j++){
-        //         cout << leftNode->state[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
     }
 }
     //--------------------------------------------------------------------RIGHT-------------------------------------------------------------------------
@@ -149,13 +128,6 @@ void moveRight(vector<vector<int>> state, Node* n, int heurisitc){
             visited[rightNode->state] = true;
             q.push(rightNode);
         }
-        //cout << "RIGHT " << rightNode->zeroI << "," << rightNode->zeroJ << endl;
-        // for(int i = 0; i < 3; i++){
-        //     for(int j = 0; j < 3; j++){
-        //         cout << rightNode->state[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
     }
 }
 //-------------------------------------------------------------BackTracing---------------------------------------------------------------
