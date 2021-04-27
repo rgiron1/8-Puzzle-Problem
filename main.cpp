@@ -370,7 +370,7 @@ int main(){
             break;
     }
 
-    cout << "Please enter the the number of the algorithm" << endl << "1. Uniform Cost Search" << endl << "2. A* Misplaced Tile Heurisitc" << endl << "3. A* Euclidean Distance Heurisitc" << endl;
+    cout << "Please enter the the number of the algorithm" << endl << "1. Uniform Cost Search" << endl << "2. A* Misplaced Tile Heuristic" << endl << "3. A* Euclidean Distance Heuristic" << endl;
     int algo = 0;
     cin >> algo;
 
