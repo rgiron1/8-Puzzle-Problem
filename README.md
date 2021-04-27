@@ -1,5 +1,5 @@
 # CS-170-project-1
-Run the program and select 1-6 for the varying difficulty levels.  return
+Run the program and select 1-6 for the varying difficulty levels. <br />
 1: Trivial
 2: Very Easy
 3: Easy
