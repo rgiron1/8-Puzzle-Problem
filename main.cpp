@@ -191,6 +191,8 @@ bool uniformCostSearch(Problem p){
         //RIGHT
         moveRight(curr->state, curr, 0);
     }
+    cout << "To solve this problem the search algorithm expanded a total of: " << totalStates << " nodes" << endl;
+    cout << "The maximum number of nodes in the queue at any one time: " << maxInQ << endl;
     return false;
 }
 
@@ -239,6 +241,8 @@ bool AStarMisplace(Problem p){
         //RIGHT
         moveRight(curr->state, curr, AStarMisplaceHeuristic(curr->state, p));
     }
+    cout << "To solve this problem the search algorithm expanded a total of: " << totalStates << " nodes" << endl;
+    cout << "The maximum number of nodes in the queue at any one time: " << maxInQ << endl;
     return false;
 }
 //------------------------------------------A* Euclidean distance------------------------------------------
@@ -286,6 +290,8 @@ bool AStarEuclidean(Problem p){
         //RIGHT
         moveRight(curr->state, curr, AStarEuclidianHeuristic(curr->state));
     }
+    cout << "To solve this problem the search algorithm expanded a total of: " << totalStates << " nodes" << endl;
+    cout << "The maximum number of nodes in the queue at any one time: " << maxInQ << endl;
     return false;
 }
 
